@@ -6,19 +6,29 @@ public class CalculatorParser {
     double rightValue;
     double result;
 
-    public void process(String statement) {
+    public void process(String statement) throws InvalidStatementException{
+        //flushFields();
         String[] parts = statement.split(" ");
+        if(parts.length != 3)
+            throw new InvalidStatementException("Incorrect number of fields", statement);
         String commandString = parts[0];
-        leftValue = Double.parseDouble(parts[1]);
-        rightValue = Double.parseDouble(parts[2]);
+
+        try {
+            leftValue = Double.parseDouble(parts[1]);
+            rightValue = Double.parseDouble(parts[2]);
+        } catch (NumberFormatException exception){
+            throw new InvalidStatementException("Non-numeric data", statement, exception);
+        }
         setCommandFromString(commandString);
+        if (command == null)
+            throw new InvalidStatementException("Invalid Command", statement);
 
         CalculateBase calculator = null;
         switch (command) {
             case Add:
                 calculator = new Adder(leftValue, rightValue);
                 break;
-            case Substract:
+            case Subtract:
                 calculator = new Subtracter(leftValue, rightValue);
                 break;
             case Multiply:
@@ -37,11 +47,18 @@ public class CalculatorParser {
             this.command = MathCommand.Add;
         } else if (commandString.equalsIgnoreCase(MathCommand.Multiply.toString())){
             this.command = MathCommand.Multiply;
-        } else if (commandString.equalsIgnoreCase(MathCommand.Substract.toString())){
-            this.command = MathCommand.Substract;
+        } else if (commandString.equalsIgnoreCase(MathCommand.Subtract.toString())){
+            this.command = MathCommand.Subtract;
         } else if (commandString.equalsIgnoreCase(MathCommand.Divide.toString())) {
             this.command = MathCommand.Divide;
         }
+    }
+
+    private void flushFields() {
+        command = null;
+        leftValue = 0;
+        rightValue = 0;
+        result = 0;
     }
 
     @Override
@@ -51,7 +68,7 @@ public class CalculatorParser {
             case Add:
                 symbol = "+";
                 break;
-            case Substract:
+            case Subtract:
                 symbol = "-";
                 break;
             case Multiply:

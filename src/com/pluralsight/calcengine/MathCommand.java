@@ -2,7 +2,7 @@ package com.pluralsight.calcengine;
 
 public enum MathCommand {
     Add,
-    Substract,
+    Subtract,
     Multiply,
     Divide
 }
