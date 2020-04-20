@@ -1,4 +1,7 @@
-package com.pluralsight.calcengine;
+package com.pluralsight.myapp;
+
+import com.pluralsight.calcengine.CalculatorParser;
+import com.pluralsight.calcengine.InvalidStatementException;
 
 public class Main {
 
@@ -19,10 +22,9 @@ public class Main {
                 CalculatorParser parser = new CalculatorParser();
                 parser.process(statement);
                 System.out.println(parser.toString());
-            } catch (InvalidStatementException exception){
+            } catch (InvalidStatementException exception) {
                 System.out.println(exception.getMessage());
             }
         }
-
     }
 }
