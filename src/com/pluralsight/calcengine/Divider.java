@@ -13,6 +13,5 @@ public class Divider extends CalculateBase {
     public void calculate() {
         double value = getLeftVal() / getRightVal();
         setResult(value);
-        ;
     }
 }
