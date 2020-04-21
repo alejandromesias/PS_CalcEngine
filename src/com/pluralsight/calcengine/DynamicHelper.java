@@ -27,7 +27,7 @@ public class DynamicHelper {
 
         StringBuilder builder = new StringBuilder(20);
         builder.append(leftValue);
-        builder.append(chosenProcessor.getKeyWord());
+        builder.append(chosenProcessor.getSymbol());
         builder.append(rightValue);
         builder.append(" = ");
         builder.append(result);
