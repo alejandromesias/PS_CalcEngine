@@ -1,16 +1,19 @@
 package com.pluralsight.calcengine;
 
 public class DynamicHelper {
-
+    private double leftValue;
+    private double rightValue;
+    double result;
     private MathProcessing[] mathProcessors;
 
     public DynamicHelper(MathProcessing[] mathProcessors) {
         this.mathProcessors = mathProcessors;
     }
 
-    public String process(String statement) {
+    public String process(String statement) throws InvalidStatementException {
         String[] parts = statement.split(MathProcessing.SEPARATOR);
-
+        if(parts.length != 3)
+            throw new InvalidStatementException("Incorrect number of fields", statement);
         String commandString = parts[0];
 
         MathProcessing chosenProcessor = null;
@@ -21,9 +24,19 @@ public class DynamicHelper {
                 break;
             }
         }
-        double leftValue = Double.parseDouble(parts[1]);
-        double rightValue = Double.parseDouble(parts[2]);
-        double result = chosenProcessor.doCalculation(leftValue,rightValue);
+
+        try {
+            leftValue = Double.parseDouble(parts[1]);
+            rightValue = Double.parseDouble(parts[2]);
+        } catch (NumberFormatException exception) {
+            throw new InvalidStatementException("Non-numeric data", statement, exception);
+        }
+
+        try {
+            result = chosenProcessor.doCalculation(leftValue, rightValue);
+        } catch (RuntimeException e) {
+            throw new InvalidStatementException("Invalid Command", statement, e);
+        }
 
         StringBuilder builder = new StringBuilder(20);
         builder.append(leftValue);
